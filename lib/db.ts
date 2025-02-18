@@ -2,30 +2,30 @@ import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 
-if(!MONGODB_URI) {
+if (!MONGODB_URI) {
     console.log("Mongodb uri is not availabe in env");
 };
 
 let cached = global.mongoose;
 
-if(!cached){
+if (!cached) {
     cached = global.mongoose = { conn: null, promise: null }
 }
 
-export async function connectionDb(){
-    if(cached.conn){
+export async function connectionDb() {
+    if (cached.conn) {
         return cached.conn;
     }
 
-    if(!cached.promise){
+    if (!cached.promise) {
         const opts = {
-            bufferCommands: true, // find now ----------------------
+            bufferCommands: true, // find now how to this work ----------------------
             maxPoolSize: 10 // how many connection to create
         }
-        
+
         cached.promise = mongoose
-        .connect(MONGODB_URI, opts)
-        .then(() => mongoose.connection)
+            .connect(MONGODB_URI, opts)
+            .then(() => mongoose.connection)
     }
 
     try {
